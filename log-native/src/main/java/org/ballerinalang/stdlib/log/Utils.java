@@ -18,6 +18,7 @@
 
 package org.ballerinalang.stdlib.log;
 
+import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 import io.ballerina.runtime.scheduling.Scheduler;
 import org.ballerinalang.logging.util.BLogLevel;
@@ -29,79 +30,41 @@ import org.ballerinalang.logging.util.BLogLevel;
  */
 public class Utils extends AbstractLogFunction {
 
-    public static void printDebug(Object msg) {
+    public static void printExtern(BString loggerName, BString logLevel, Object msg, BMap<BString, Object> keyValuePairs) {
+        BLogLevel level = BLogLevel.toBLogLevel(logLevel.toString());
         boolean logLevelEnabled;
         if (LOG_MANAGER.isModuleLogLevelEnabled()) {
-            logLevelEnabled = LOG_MANAGER.getPackageLogLevel(getPackagePath()).value() <= BLogLevel.DEBUG.value();
+            logLevelEnabled = LOG_MANAGER.getPackageLogLevel(getPackagePath()).value() <= level.value();
         } else {
-            logLevelEnabled = LOG_MANAGER.getPackageLogLevel(".").value() <= BLogLevel.DEBUG.value();
+            logLevelEnabled = LOG_MANAGER.getPackageLogLevel(".").value() <= level.value();
         }
         if (logLevelEnabled) {
-            logMessage(Scheduler.getStrand(), msg, BLogLevel.DEBUG, getPackagePath(),
-                    (pkg, message) -> {
-                        getLogger(pkg).debug(message);
-                    });
-        }
-    }
-
-    public static void printError(Object msg, Object err) {
-        boolean logLevelEnabled;
-        if (LOG_MANAGER.isModuleLogLevelEnabled()) {
-            logLevelEnabled = LOG_MANAGER.getPackageLogLevel(getPackagePath()).value() <= BLogLevel.ERROR.value();
-        } else {
-            logLevelEnabled = LOG_MANAGER.getPackageLogLevel(".").value() <= BLogLevel.ERROR.value();
-        }
-        if (logLevelEnabled) {
-            logMessage(Scheduler.getStrand(), msg, BLogLevel.ERROR, getPackagePath(),
-                    (pkg, message) -> {
-                        String errorMsg = (err == null) ? "" : " : " + err.toString();
-                        getLogger(pkg).error(message + errorMsg);
-                    });
-        }
-    }
-
-    public static void printInfo(Object msg) {
-        boolean logLevelEnabled;
-        if (LOG_MANAGER.isModuleLogLevelEnabled()) {
-            logLevelEnabled = LOG_MANAGER.getPackageLogLevel(getPackagePath()).value() <= BLogLevel.INFO.value();
-        } else {
-            logLevelEnabled = LOG_MANAGER.getPackageLogLevel(".").value() <= BLogLevel.INFO.value();
-        }
-        if (logLevelEnabled) {
-            logMessage(Scheduler.getStrand(), msg, BLogLevel.INFO, getPackagePath(),
-                    (pkg, message) -> {
-                        getLogger(pkg).info(message);
-                    });
-        }
-    }
-
-    public static void printTrace(Object msg) {
-        boolean logLevelEnabled;
-        if (LOG_MANAGER.isModuleLogLevelEnabled()) {
-            logLevelEnabled = LOG_MANAGER.getPackageLogLevel(getPackagePath()).value() <= BLogLevel.TRACE.value();
-        } else {
-            logLevelEnabled = LOG_MANAGER.getPackageLogLevel(".").value() <= BLogLevel.TRACE.value();
-        }
-        if (logLevelEnabled) {
-            logMessage(Scheduler.getStrand(), msg, BLogLevel.TRACE, getPackagePath(),
-                    (pkg, message) -> {
-                        getLogger(pkg).trace(message);
-                    });
-        }
-    }
-
-    public static void printWarn(Object msg) {
-        boolean logLevelEnabled;
-        if (LOG_MANAGER.isModuleLogLevelEnabled()) {
-            logLevelEnabled = LOG_MANAGER.getPackageLogLevel(getPackagePath()).value() <= BLogLevel.WARN.value();
-        } else {
-            logLevelEnabled = LOG_MANAGER.getPackageLogLevel(".").value() <= BLogLevel.WARN.value();
-        }
-        if (logLevelEnabled) {
-            logMessage(Scheduler.getStrand(), msg, BLogLevel.WARN, getPackagePath(),
-                    (pkg, message) -> {
-                        getLogger(pkg).warn(message);
-                    });
+            if (level == BLogLevel.ERROR) {
+                logMessage(Scheduler.getStrand(), msg, level, getPackagePath(),
+                        (pkg, message) -> {
+                            getLogger(pkg, loggerName.toString()).error(message);
+                        });
+            } else if (level == BLogLevel.WARN) {
+                logMessage(Scheduler.getStrand(), msg, level, getPackagePath(),
+                        (pkg, message) -> {
+                            getLogger(pkg, loggerName.toString()).warn(message);
+                        });
+            } else if (level == BLogLevel.INFO) {
+                logMessage(Scheduler.getStrand(), msg, level, getPackagePath(),
+                        (pkg, message) -> {
+                            getLogger(pkg, loggerName.toString()).info(message);
+                        });
+            } else if (level == BLogLevel.DEBUG) {
+                logMessage(Scheduler.getStrand(), msg, level, getPackagePath(),
+                        (pkg, message) -> {
+                            getLogger(pkg, loggerName.toString()).debug(message);
+                        });
+            } else {
+                logMessage(Scheduler.getStrand(), msg, level, getPackagePath(),
+                        (pkg, message) -> {
+                            getLogger(pkg, loggerName.toString()).trace(message);
+                        });
+            }
         }
     }
 

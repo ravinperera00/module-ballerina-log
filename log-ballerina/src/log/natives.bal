@@ -27,58 +27,6 @@ public enum LogLevel {
     OFF
 }
 
-# Logs the specified value at DEBUG level.
-# ```ballerina
-# log:printDebug("debug log");
-# ```
-#
-# + msg - The message to be logged
-public isolated function printDebug(anydata|(function () returns (anydata)) msg) = @java:Method {
-    'class: "org.ballerinalang.stdlib.log.Utils"
-} external;
-
-# Logs the specified message at ERROR level.
-# ```ballerina
-# error e = error("error occurred");
-# log:printError("error log with cause", err = e);
-# ```
-# 
-# + msg - The message to be logged
-# + err - The error struct to be logged
-public isolated function printError(anydata|(function () returns (anydata)) msg, error? err = ()) = @java:Method {
-    'class: "org.ballerinalang.stdlib.log.Utils"
-} external;
-
-# Logs the specified message at INFO level.
-# ```ballerina
-# log:printInfo("info log");
-# ```
-# 
-# + msg - The message to be logged
-public isolated function printInfo(anydata|(function () returns (anydata)) msg) = @java:Method {
-    'class: "org.ballerinalang.stdlib.log.Utils"
-} external;
-
-# Logs the specified message at TRACE level.
-# ```ballerina
-# log:printTrace("trace log");
-# ```
-# 
-# + msg - The message to be logged
-public isolated function printTrace(anydata|(function () returns (anydata)) msg) = @java:Method {
-    'class: "org.ballerinalang.stdlib.log.Utils"
-} external;
-
-# Logs the specified message at WARN level.
-# ```ballerina
-# log:printWarn("warn log");
-# ```
-# 
-# + msg - The message to be logged
-public isolated function printWarn(anydata|(function () returns (anydata)) msg) = @java:Method {
-    'class: "org.ballerinalang.stdlib.log.Utils"
-} external;
-
 # Sets the module log level. If a module name is not specified, the log level will be set to the current module.
 # Following log levels are allowed.
 #
