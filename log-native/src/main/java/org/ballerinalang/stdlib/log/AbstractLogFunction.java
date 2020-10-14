@@ -39,12 +39,11 @@ public abstract class AbstractLogFunction {
 
     private static final Logger ballerinaRootLogger = LoggerFactory.getLogger(BLogManager.BALLERINA_ROOT_LOGGER_NAME);
 
-    protected static Logger getLogger(String pkg) {
+    protected static Logger getLogger(String pkg, String loggerName) {
         if (".".equals(pkg) || pkg == null) {
-            return ballerinaRootLogger;
+            return LoggerFactory.getLogger(ballerinaRootLogger.getName() + "." + loggerName);
         } else {
-            // TODO: Refactor this later
-            return LoggerFactory.getLogger(ballerinaRootLogger.getName() + "." + pkg);
+            return LoggerFactory.getLogger(ballerinaRootLogger.getName() + "." + pkg + "." + loggerName);
         }
     }
 

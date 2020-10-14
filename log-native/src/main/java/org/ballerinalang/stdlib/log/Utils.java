@@ -18,6 +18,8 @@
 
 package org.ballerinalang.stdlib.log;
 
+import io.ballerina.runtime.api.values.BMap;
+import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 import org.ballerinalang.logging.util.BLogLevel;
 
@@ -27,6 +29,44 @@ import org.ballerinalang.logging.util.BLogLevel;
  * @since 1.1.0
  */
 public class Utils extends AbstractLogFunction {
+
+    public static void printExtern(BString loggerName, BString logLevel, Object msg, BMap<BString, Object> keyValuePairs) {
+        BLogLevel level = BLogLevel.toBLogLevel(logLevel.toString());
+        boolean logLevelEnabled;
+        if (LOG_MANAGER.isModuleLogLevelEnabled()) {
+            logLevelEnabled = LOG_MANAGER.getPackageLogLevel(getPackagePath()).value() <= level.value();
+        } else {
+            logLevelEnabled = LOG_MANAGER.getPackageLogLevel(".").value() <= level.value();
+        }
+        if (logLevelEnabled) {
+            if (level == BLogLevel.ERROR) {
+                logMessage(Scheduler.getStrand(), msg, level, getPackagePath(),
+                        (pkg, message) -> {
+                            getLogger(pkg, loggerName.toString()).error(message);
+                        });
+            } else if (level == BLogLevel.WARN) {
+                logMessage(Scheduler.getStrand(), msg, level, getPackagePath(),
+                        (pkg, message) -> {
+                            getLogger(pkg, loggerName.toString()).warn(message);
+                        });
+            } else if (level == BLogLevel.INFO) {
+                logMessage(Scheduler.getStrand(), msg, level, getPackagePath(),
+                        (pkg, message) -> {
+                            getLogger(pkg, loggerName.toString()).info(message);
+                        });
+            } else if (level == BLogLevel.DEBUG) {
+                logMessage(Scheduler.getStrand(), msg, level, getPackagePath(),
+                        (pkg, message) -> {
+                            getLogger(pkg, loggerName.toString()).debug(message);
+                        });
+            } else {
+                logMessage(Scheduler.getStrand(), msg, level, getPackagePath(),
+                        (pkg, message) -> {
+                            getLogger(pkg, loggerName.toString()).trace(message);
+                        });
+            }
+        }
+    }
 
     public static boolean isLogLevelEnabled(BString logLevel) {
         if (LOG_MANAGER.isModuleLogLevelEnabled()) {

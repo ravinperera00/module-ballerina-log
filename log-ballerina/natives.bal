@@ -48,7 +48,7 @@ public isolated function printDebug(anydata|(isolated function () returns (anyda
 # error e = error("error occurred");
 # log:printError("error log with cause", err = e);
 # ```
-# 
+#
 # + msg - The message to be logged
 # + err - The error struct to be logged
 public isolated function printError(anydata|(isolated function () returns (anydata)) msg, error? err = ()) {
@@ -65,7 +65,7 @@ public isolated function printError(anydata|(isolated function () returns (anyda
 # ```ballerina
 # log:printInfo("info log");
 # ```
-# 
+#
 # + msg - The message to be logged
 public isolated function printInfo(anydata|(isolated function () returns (anydata)) msg) {
     if (isLogLevelEnabled(INFO)) {
@@ -81,7 +81,7 @@ public isolated function printInfo(anydata|(isolated function () returns (anydat
 # ```ballerina
 # log:printTrace("trace log");
 # ```
-# 
+#
 # + msg - The message to be logged
 public isolated function printTrace(anydata|(isolated function () returns (anydata)) msg) {
     if (isLogLevelEnabled(TRACE)) {
@@ -97,7 +97,7 @@ public isolated function printTrace(anydata|(isolated function () returns (anyda
 # ```ballerina
 # log:printWarn("warn log");
 # ```
-# 
+#
 # + msg - The message to be logged
 public isolated function printWarn(anydata|(isolated function () returns (anydata)) msg) {
     if (isLogLevelEnabled(WARN)) {
