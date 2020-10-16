@@ -16,12 +16,6 @@
 
 import ballerina/java;
 
-# Represents a key-value pair.
-public type KeyValuePair record {
-    never message?;
-    never level?; 
-};
-
 # Represents a logger instance.
 public class Logger {
 
@@ -36,14 +30,12 @@ public class Logger {
     # Print the log message.
     # ```ballerina
     # log:Logger logger = log:getLogger("auditLogger");
-    # logger.print(log:DEBUG, "DEBUG level log", {"foo" : "bar"});
+    # logger.print(log:DEBUG, "DEBUG level log");
     # ```
     # + level - Log level
     # + message - message
-    # + keyValuePairs - key value pairs
-    public isolated function print(LogLevel level, anydata|(function () returns (anydata)) message,
-    KeyValuePair keyValuePairs) {
-        printExtern(self.loggerName, level, message, keyValuePairs);
+    public isolated function print(LogLevel level, anydata|(function () returns (anydata)) message) {
+        printExtern(self.loggerName, level, message, self.logContext);
     }
 }
 
@@ -58,6 +50,6 @@ public isolated function getLogger(string name, (map<anydata> & readonly)? conte
 }
 
 isolated function printExtern(string loggerName, LogLevel level, anydata|(function () returns (anydata)) message,
-KeyValuePair keyValuePairs) = @java:Method {
+ (map<anydata> & readonly)? logContext) = @java:Method {
     'class: "org.ballerinalang.stdlib.log.Utils"
 } external;

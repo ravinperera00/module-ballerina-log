@@ -81,7 +81,7 @@ public abstract class AbstractLogFunction {
     }
 
     static String getPackagePath() {
-        String className = Thread.currentThread().getStackTrace()[4].getClassName();
+        String className = Thread.currentThread().getStackTrace()[6].getClassName();
         String[] pkgData = className.split("\\.");
         if (pkgData.length > 1) {
             return pkgData[0] + "/" + pkgData[1];
