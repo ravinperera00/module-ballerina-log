@@ -43,7 +43,8 @@ public abstract class AbstractLogFunction {
         if (".".equals(pkg) || pkg == null) {
             return LoggerFactory.getLogger(ballerinaRootLogger.getName() + "." + loggerName);
         } else {
-            return LoggerFactory.getLogger(ballerinaRootLogger.getName() + "." + pkg + "." + loggerName);
+            return LoggerFactory.getLogger(ballerinaRootLogger.getName() + "." + pkg +
+                    BLogManager.BALLERINA_LOGGER_DELIMITER + loggerName);
         }
     }
 
