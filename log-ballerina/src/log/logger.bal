@@ -16,6 +16,8 @@
 
 import ballerina/java;
 
+type contextMap map<anydata>;
+
 # Represents a logger instance.
 public class Logger {
 
@@ -27,7 +29,7 @@ public class Logger {
 
     # Print the log message.
     # ```ballerina
-    # log:Logger logger = log:getLogger("auditLogger");
+    # log:Logger logger = log:getLogger();
     # logger.print(log:DEBUG, "DEBUG level log");
     # ```
     #
@@ -40,12 +42,39 @@ public class Logger {
 
 # Return a logger instance.
 # ```ballerina
-# log:Logger logger = log:getLogger("auditLogger");
+# log:Logger logger = log:getLogger();
 # ```
 #
+public isolated function getLogger() returns Logger {
+    return new Logger();
+}
+
+# Return a copy of a logger instance with context.
+# ```ballerina
+# log:Logger logger = log:getLogger();
+# log:Logger loggerWithContext = log:getLoggerWithContext(logger, {id: 1234, username : "madhuka92", country: "SL"});
+# ```
+#
+# + logger - logger
 # + context - Log context
-public isolated function getLogger((map<anydata> & readonly)? context = ()) returns Logger {
-    return new Logger(context);
+public isolated function getLoggerWithContext(Logger logger, (map<anydata> & readonly)? context = ()) returns Logger {
+    (map<anydata> & readonly) logContext = { };
+
+    map<anydata>|error temp1 = logger.logContext.cloneWithType(contextMap);
+    if (temp1 is error) {
+    // handle the error
+    } else {
+        map<anydata>|error temp2 = context.cloneWithType(contextMap);
+        if (temp2 is error) {
+        // handle the error
+        } else {
+            foreach var [key, value] in temp2.entries() {
+                temp1[key] = value;
+            }
+        }
+        logContext = <map<anydata> & readonly>temp1.cloneReadOnly();
+    }
+    return new Logger(logContext);
 }
 
 isolated function printExtern(LogLevel level, anydata|(function () returns (anydata)) message,
