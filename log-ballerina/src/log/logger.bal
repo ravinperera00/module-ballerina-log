@@ -19,11 +19,9 @@ import ballerina/java;
 # Represents a logger instance.
 public class Logger {
 
-    string loggerName;
     (map<anydata> & readonly)? logContext = {};
 
-    isolated function init(string loggerName, (map<anydata> & readonly)? logContext = ()) {
-        self.loggerName = loggerName;
+    isolated function init((map<anydata> & readonly)? logContext = ()) {
         self.logContext = logContext;
     }
 
@@ -32,10 +30,11 @@ public class Logger {
     # log:Logger logger = log:getLogger("auditLogger");
     # logger.print(log:DEBUG, "DEBUG level log");
     # ```
+    #
     # + level - Log level
     # + message - message
     public isolated function print(LogLevel level, anydata|(function () returns (anydata)) message) {
-        printExtern(self.loggerName, level, message, self.logContext);
+        printExtern(level, message, self.logContext);
     }
 }
 
@@ -43,13 +42,13 @@ public class Logger {
 # ```ballerina
 # log:Logger logger = log:getLogger("auditLogger");
 # ```
-# + name - Logger name
+#
 # + context - Log context
-public isolated function getLogger(string name, (map<anydata> & readonly)? context = ()) returns Logger {
-    return new Logger(name, context);
+public isolated function getLogger((map<anydata> & readonly)? context = ()) returns Logger {
+    return new Logger(context);
 }
 
-isolated function printExtern(string loggerName, LogLevel level, anydata|(function () returns (anydata)) message,
+isolated function printExtern(LogLevel level, anydata|(function () returns (anydata)) message,
  (map<anydata> & readonly)? logContext) = @java:Method {
     'class: "org.ballerinalang.stdlib.log.Utils"
 } external;

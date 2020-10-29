@@ -32,7 +32,7 @@ import java.util.Map;
  */
 public class Utils extends AbstractLogFunction {
 
-    public static void printExtern(BString loggerName, BString logLevel, Object msg, Object logContext) {
+    public static void printExtern(BString logLevel, Object msg, Object logContext) {
         BLogLevel level = BLogLevel.toBLogLevel(logLevel.toString());
         boolean logLevelEnabled;
         if (LOG_MANAGER.isModuleLogLevelEnabled()) {
@@ -58,27 +58,27 @@ public class Utils extends AbstractLogFunction {
             if (level == BLogLevel.ERROR) {
                 logMessage(Scheduler.getStrand(), logMessage.toString(), level, getPackagePath(),
                         (pkg, message) -> {
-                            getLogger(pkg, loggerName.toString()).error(message);
+                            getLogger(pkg).error(message);
                         });
             } else if (level == BLogLevel.WARN) {
                 logMessage(Scheduler.getStrand(), logMessage.toString(), level, getPackagePath(),
                         (pkg, message) -> {
-                            getLogger(pkg, loggerName.toString()).warn(message);
+                            getLogger(pkg).warn(message);
                         });
             } else if (level == BLogLevel.INFO) {
                 logMessage(Scheduler.getStrand(), logMessage.toString(), level, getPackagePath(),
                         (pkg, message) -> {
-                            getLogger(pkg, loggerName.toString()).info(message);
+                            getLogger(pkg).info(message);
                         });
             } else if (level == BLogLevel.DEBUG) {
                 logMessage(Scheduler.getStrand(), logMessage.toString(), level, getPackagePath(),
                         (pkg, message) -> {
-                            getLogger(pkg, loggerName.toString()).debug(message);
+                            getLogger(pkg).debug(message);
                         });
             } else {
                 logMessage(Scheduler.getStrand(), logMessage.toString(), level, getPackagePath(),
                         (pkg, message) -> {
-                            getLogger(pkg, loggerName.toString()).trace(message);
+                            getLogger(pkg).trace(message);
                         });
             }
         }
