@@ -22,8 +22,10 @@ type contextMap map<anydata>;
 public class Logger {
 
     (map<anydata> & readonly)? logContext = {};
+    LogLevel? logLevel = ();
 
-    isolated function init((map<anydata> & readonly)? logContext = ()) {
+    isolated function init(LogLevel? logLevel = (), (map<anydata> & readonly)? logContext = ()) {
+        self.logLevel = logLevel;
         self.logContext = logContext;
     }
 
@@ -36,17 +38,20 @@ public class Logger {
     # + level - Log level
     # + message - message
     public isolated function log(LogLevel level, anydata|(function () returns (anydata)) message) {
-        logExtern(level, message, self.logContext);
+        logExtern(level, message, self.logContext, self.logLevel);
     }
 }
 
 # Return a logger instance.
 # ```ballerina
 # log:Logger logger = log:logger();
+# log:Logger logger = log:logger(log:WARN);
 # ```
 #
-public isolated function logger() returns Logger {
-    return new Logger();
+# + logLevel - Log level
+# + return - A Logger
+public isolated function logger(LogLevel? logLevel = ()) returns Logger {
+    return new Logger(logLevel);
 }
 
 # Return a copy of a logger instance with context.
@@ -57,6 +62,7 @@ public isolated function logger() returns Logger {
 #
 # + logger - logger
 # + context - Log context
+# + return - A Logger with context
 public isolated function loggerWithContext(Logger logger, (map<anydata> & readonly)? context = ()) returns Logger {
     (map<anydata> & readonly) logContext = { };
 
@@ -79,10 +85,10 @@ public isolated function loggerWithContext(Logger logger, (map<anydata> & readon
         }
         logContext = <map<anydata> & readonly>temp1.cloneReadOnly();
     }
-    return new Logger(logContext);
+    return new Logger(logLevel = (), logContext = logContext);
 }
 
 isolated function logExtern(LogLevel level, anydata|(function () returns (anydata)) message,
- (map<anydata> & readonly)? logContext) = @java:Method {
+(map<anydata> & readonly)? logContext, LogLevel? loggerLevel) = @java:Method {
     'class: "org.ballerinalang.stdlib.log.Utils"
 } external;
