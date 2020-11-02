@@ -32,7 +32,7 @@ import java.util.Map;
  */
 public class Utils extends AbstractLogFunction {
 
-    public static void printExtern(BString logLevel, Object msg, Object logContext) {
+    public static void logExtern(BString logLevel, Object msg, Object logContext) {
         BLogLevel level = BLogLevel.toBLogLevel(logLevel.toString());
         boolean logLevelEnabled;
         if (LOG_MANAGER.isModuleLogLevelEnabled()) {

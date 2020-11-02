@@ -29,38 +29,43 @@ public class Logger {
 
     # Print the log message.
     # ```ballerina
-    # log:Logger logger = log:getLogger();
-    # logger.print(log:DEBUG, "DEBUG level log");
+    # log:Logger logger = log:logger();
+    # logger.log(log:DEBUG, "DEBUG level log");
     # ```
     #
     # + level - Log level
     # + message - message
-    public isolated function print(LogLevel level, anydata|(function () returns (anydata)) message) {
-        printExtern(level, message, self.logContext);
+    public isolated function log(LogLevel level, anydata|(function () returns (anydata)) message) {
+        logExtern(level, message, self.logContext);
     }
 }
 
 # Return a logger instance.
 # ```ballerina
-# log:Logger logger = log:getLogger();
+# log:Logger logger = log:logger();
 # ```
 #
-public isolated function getLogger() returns Logger {
+public isolated function logger() returns Logger {
     return new Logger();
 }
 
 # Return a copy of a logger instance with context.
 # ```ballerina
-# log:Logger logger = log:getLogger();
-# log:Logger loggerWithContext = log:getLoggerWithContext(logger, {id: 1234, username : "madhuka92", country: "SL"});
+# log:Logger logger = log:logger();
+# log:Logger loggerWithContext = log:loggerWithContext(logger, {id: 1234, username : "madhuka92", country: "SL"});
 # ```
 #
 # + logger - logger
 # + context - Log context
-public isolated function getLoggerWithContext(Logger logger, (map<anydata> & readonly)? context = ()) returns Logger {
+public isolated function loggerWithContext(Logger logger, (map<anydata> & readonly)? context = ()) returns Logger {
     (map<anydata> & readonly) logContext = { };
 
-    map<anydata>|error temp1 = logger.logContext.cloneWithType(contextMap);
+    map<anydata>|error temp1;
+    if (logger.logContext != ()) {
+        temp1 = logger.logContext.cloneWithType(contextMap);
+    } else {
+        temp1 = {};
+    }
     if (temp1 is error) {
     // handle the error
     } else {
@@ -77,7 +82,7 @@ public isolated function getLoggerWithContext(Logger logger, (map<anydata> & rea
     return new Logger(logContext);
 }
 
-isolated function printExtern(LogLevel level, anydata|(function () returns (anydata)) message,
+isolated function logExtern(LogLevel level, anydata|(function () returns (anydata)) message,
  (map<anydata> & readonly)? logContext) = @java:Method {
     'class: "org.ballerinalang.stdlib.log.Utils"
 } external;
