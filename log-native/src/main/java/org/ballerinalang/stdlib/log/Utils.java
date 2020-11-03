@@ -44,42 +44,42 @@ public class Utils extends AbstractLogFunction {
             logLevelEnabled = LOG_MANAGER.getPackageLogLevel(".").value() <= level.value();
         }
         if (logLevelEnabled) {
-            StringBuilder logMessage = new StringBuilder(msg.toString());
+            StringBuilder keyValues = new StringBuilder("");
             BMap<BString, Object> contextMap = (BMap<BString, Object>) logContext;
             if (contextMap != null) {
                 int count = 0;
                 for (Map.Entry<BString, Object> fieldEntry : contextMap.entrySet()) {
                     if (count++ == 0) {
-                        logMessage.append(" | ");
+                        keyValues.append(" | ");
                     } else {
-                        logMessage.append(", ");
+                        keyValues.append(", ");
                     }
-                    logMessage.append(fieldEntry.getKey().toString()).append("=").
+                    keyValues.append(fieldEntry.getKey().toString()).append("=").
                             append(fieldEntry.getValue().toString());
                 }
             }
             if (level == BLogLevel.ERROR) {
-                logMessage(Scheduler.getStrand(), logMessage.toString(), level, getPackagePath(),
+                logMessage(Scheduler.getStrand(), msg, keyValues.toString(), level, getPackagePath(),
                         (pkg, message) -> {
                             getLogger(pkg).error(message);
                         });
             } else if (level == BLogLevel.WARN) {
-                logMessage(Scheduler.getStrand(), logMessage.toString(), level, getPackagePath(),
+                logMessage(Scheduler.getStrand(), msg, keyValues.toString(), level, getPackagePath(),
                         (pkg, message) -> {
                             getLogger(pkg).warn(message);
                         });
             } else if (level == BLogLevel.INFO) {
-                logMessage(Scheduler.getStrand(), logMessage.toString(), level, getPackagePath(),
+                logMessage(Scheduler.getStrand(), msg, keyValues.toString(), level, getPackagePath(),
                         (pkg, message) -> {
                             getLogger(pkg).info(message);
                         });
             } else if (level == BLogLevel.DEBUG) {
-                logMessage(Scheduler.getStrand(), logMessage.toString(), level, getPackagePath(),
+                logMessage(Scheduler.getStrand(), msg, keyValues.toString(), level, getPackagePath(),
                         (pkg, message) -> {
                             getLogger(pkg).debug(message);
                         });
             } else {
-                logMessage(Scheduler.getStrand(), logMessage.toString(), level, getPackagePath(),
+                logMessage(Scheduler.getStrand(), msg, keyValues.toString(), level, getPackagePath(),
                         (pkg, message) -> {
                             getLogger(pkg).trace(message);
                         });

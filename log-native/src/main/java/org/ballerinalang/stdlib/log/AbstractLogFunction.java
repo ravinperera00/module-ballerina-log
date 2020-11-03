@@ -56,6 +56,7 @@ public abstract class AbstractLogFunction {
      * @param consumer log message consumer
      */
     static void logMessage(Object message, BLogLevel logLevel, String pckg,
+    static void logMessage(Strand strand, Object message, String keyValues, BLogLevel logLevel, String pckg,
                            BiConsumer<String, String> consumer) {
         // Create a new log message supplier
         Supplier<String> logMessage = new Supplier<String>() {
@@ -68,7 +69,7 @@ public abstract class AbstractLogFunction {
                     Object arg = message;
                     msg = arg.toString();
                 }
-                return msg;
+                return msg + keyValues;
             }
         };
         consumer.accept(pckg, logMessage.get());
