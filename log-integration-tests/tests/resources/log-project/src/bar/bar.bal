@@ -16,6 +16,9 @@
 
 import ballerina/log;
 
+final log:Logger logger = log:logger();
+
 public function logInBar() {
-    log:printInfo("Logging from inside `bar` module");
+
+    logger.log(log:INFO, "Logging from inside `bar` module");
 }

@@ -16,10 +16,13 @@
 
 import ballerina/log;
 
+final log:Logger logger = log:logger();
+
 public function logInBeta() {
-    log:printError("Logging error log from inside `beta` module");
-    log:printWarn("Logging warn log from inside `beta` module");
-    log:printInfo("Logging info log from inside `beta` module");
-    log:printDebug("Logging debug log from inside `beta` module");
-    log:printTrace("Logging trace log from inside `beta` module");
+
+    logger.log(log:ERROR, "Logging error log from inside `beta` module");
+    logger.log(log:WARN, "Logging warn log from inside `beta` module");
+    logger.log(log:INFO, "Logging info log from inside `beta` module");
+    logger.log(log:DEBUG, "Logging debug log from inside `beta` module");
+    logger.log(log:TRACE, "Logging trace log from inside `beta` module");
 }

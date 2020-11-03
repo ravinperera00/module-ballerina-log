@@ -16,7 +16,10 @@
 
 import ballerina/log;
 
+final log:Logger logger = log:logger();
+
 public function logInFoo() {
-    log:printInfo("Logging from inside `foo` module");
-    log:printDebug("Logging at DEBUG level inside `foo`");
+
+    logger.log(log:INFO, "Logging from inside `foo` module");
+    logger.log(log:DEBUG, "Logging at DEBUG level inside `foo`");
 }

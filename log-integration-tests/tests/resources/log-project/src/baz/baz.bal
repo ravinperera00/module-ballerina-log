@@ -16,7 +16,10 @@
 
 import ballerina/log;
 
+final log:Logger logger = log:logger();
+
 public function logInBaz() {
-    log:printDebug("Logging from inside `baz` module");
-    log:printError("Logging at ERROR level inside `baz`");
+
+    logger.log(log:DEBUG, "Logging from inside `baz` module");
+    logger.log(log:ERROR, "Logging at ERROR level inside `baz`");
 }

@@ -16,12 +16,14 @@
 
 import ballerina/log;
 
+final log:Logger logger = log:logger();
+
 public function logInDelta2() {
     log:setModuleLogLevel(log:ERROR);
 
-    log:printError("Logging error log from inside `delta2` module");
-    log:printWarn("Logging warn log from inside `delta2` module");
-    log:printInfo("Logging info log from inside `delta2` module");
-    log:printDebug("Logging debug log from inside `delta2` module");
-    log:printTrace("Logging trace log from inside `delta2` module");
+    logger.log(log:ERROR, "Logging error log from inside `delta2` module");
+    logger.log(log:WARN, "Logging warn log from inside `delta2` module");
+    logger.log(log:INFO, "Logging info log from inside `delta2` module");
+    logger.log(log:DEBUG, "Logging debug log from inside `delta2` module");
+    logger.log(log:TRACE, "Logging trace log from inside `delta2` module");
 }

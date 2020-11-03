@@ -19,6 +19,8 @@ import logorg/foo;
 import logorg/bar;
 import logorg/baz;
 
+final log:Logger logger = log:logger();
+
 public function main() {
     foo:logInFoo();
     bar:logInBar();
@@ -27,5 +29,5 @@ public function main() {
 }
 
 public function logInMain() {
-    log:printInfo("Logging from inside `mainmod` module");
+    logger.log(log:INFO, "Logging from inside `mainmod` module");
 }

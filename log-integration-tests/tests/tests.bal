@@ -12,7 +12,6 @@ const LOG_LEVEL_TEST_FILE = "tests/resources/log_level_test.bal";
 const LOG_MESSAGE_TEST_FILE_LOCATION = "tests/resources/log-messages";
 const LOG_LEVEL_PROPERTY = "b7a.log.level";
 const ERROR_LOG = "ERROR level log";
-const ERROR_LOG_WITH_ERROR = "ERROR level log with error : error(\"B7aError\",foo=\"bar\")";
 const WARN_LOG = "WARN level log";
 const INFO_LOG = "INFO level log";
 const DEBUG_LOG = "DEBUG level log";
@@ -21,7 +20,6 @@ const INTEGER_OUTPUT = "123456";
 const FLOAT_OUTPUT = "123456.789";
 const BOOLEAN_OUTPUT = "true";
 const FUNCTION_OUTPUT = "Name of the fruit is is Apple";
-const ERROR_WITH_CAUSE_OUTPUT = "error log with cause : error(\"error occurred\")";
 
 @test:Config {}
 public function testBasicLogFunctionality() {
@@ -65,9 +63,8 @@ public function testErrorLevel() {
     io:ReadableCharacterChannel sc = new (readableResult, UTF_8);
     string outText = checkpanic sc.read(100000);
     string[] logLines = stringutils:split(outText, "\n");
-    test:assertEquals(logLines.length(), 6, INCORRECT_NUMBER_OF_LINES);
+    test:assertEquals(logLines.length(), 5, INCORRECT_NUMBER_OF_LINES);
     validateLog(logLines[4], "ERROR", "[]", ERROR_LOG);
-    validateLog(logLines[5], "ERROR", "[]", ERROR_LOG_WITH_ERROR);
 }
 
 @test:Config {}
@@ -81,10 +78,9 @@ public function testWarnLevel() {
     io:ReadableCharacterChannel sc = new (readableResult, UTF_8);
     string outText = checkpanic sc.read(100000);
     string[] logLines = stringutils:split(outText, "\n");
-    test:assertEquals(logLines.length(), 7, INCORRECT_NUMBER_OF_LINES);
+    test:assertEquals(logLines.length(), 6, INCORRECT_NUMBER_OF_LINES);
     validateLog(logLines[4], "ERROR", "[]", ERROR_LOG);
-    validateLog(logLines[5], "ERROR", "[]", ERROR_LOG_WITH_ERROR);
-    validateLog(logLines[6], "WARN", "[]", WARN_LOG);
+    validateLog(logLines[5], "WARN", "[]", WARN_LOG);
 }
 
 @test:Config {}
@@ -98,11 +94,10 @@ public function testInfoLevel() {
     io:ReadableCharacterChannel sc = new (readableResult, UTF_8);
     string outText = checkpanic sc.read(100000);
     string[] logLines = stringutils:split(outText, "\n");
-    test:assertEquals(logLines.length(), 8, INCORRECT_NUMBER_OF_LINES);
+    test:assertEquals(logLines.length(), 7, INCORRECT_NUMBER_OF_LINES);
     validateLog(logLines[4], "ERROR", "[]", ERROR_LOG);
-    validateLog(logLines[5], "ERROR", "[]", ERROR_LOG_WITH_ERROR);
-    validateLog(logLines[6], "WARN", "[]", WARN_LOG);
-    validateLog(logLines[7], "INFO", "[]", INFO_LOG);
+    validateLog(logLines[5], "WARN", "[]", WARN_LOG);
+    validateLog(logLines[6], "INFO", "[]", INFO_LOG);
 }
 
 @test:Config {}
@@ -116,12 +111,11 @@ public function testDebugLevel() {
     io:ReadableCharacterChannel sc = new (readableResult, UTF_8);
     string outText = checkpanic sc.read(100000);
     string[] logLines = stringutils:split(outText, "\n");
-    test:assertEquals(logLines.length(), 9, INCORRECT_NUMBER_OF_LINES);
+    test:assertEquals(logLines.length(), 8, INCORRECT_NUMBER_OF_LINES);
     validateLog(logLines[4], "ERROR", "[]", ERROR_LOG);
-    validateLog(logLines[5], "ERROR", "[]", ERROR_LOG_WITH_ERROR);
-    validateLog(logLines[6], "WARN", "[]", WARN_LOG);
-    validateLog(logLines[7], "INFO", "[]", INFO_LOG);
-    validateLog(logLines[8], "DEBUG", "[]", DEBUG_LOG);
+    validateLog(logLines[5], "WARN", "[]", WARN_LOG);
+    validateLog(logLines[6], "INFO", "[]", INFO_LOG);
+    validateLog(logLines[7], "DEBUG", "[]", DEBUG_LOG);
 }
 
 @test:Config {}
@@ -135,13 +129,12 @@ public function testTraceLevel() {
     io:ReadableCharacterChannel sc = new (readableResult, UTF_8);
     string outText = checkpanic sc.read(100000);
     string[] logLines = stringutils:split(outText, "\n");
-    test:assertEquals(logLines.length(), 10, INCORRECT_NUMBER_OF_LINES);
+    test:assertEquals(logLines.length(), 9, INCORRECT_NUMBER_OF_LINES);
     validateLog(logLines[4], "ERROR", "[]", ERROR_LOG);
-    validateLog(logLines[5], "ERROR", "[]", ERROR_LOG_WITH_ERROR);
-    validateLog(logLines[6], "WARN", "[]", WARN_LOG);
-    validateLog(logLines[7], "INFO", "[]", INFO_LOG);
-    validateLog(logLines[8], "DEBUG", "[]", DEBUG_LOG);
-    validateLog(logLines[9], "TRACE", "[]", TRACE_LOG);
+    validateLog(logLines[5], "WARN", "[]", WARN_LOG);
+    validateLog(logLines[6], "INFO", "[]", INFO_LOG);
+    validateLog(logLines[7], "DEBUG", "[]", DEBUG_LOG);
+    validateLog(logLines[8], "TRACE", "[]", TRACE_LOG);
 }
 
 @test:Config {}
@@ -155,13 +148,12 @@ public function testAllOn() {
     io:ReadableCharacterChannel sc = new (readableResult, UTF_8);
     string outText = checkpanic sc.read(100000);
     string[] logLines = stringutils:split(outText, "\n");
-    test:assertEquals(logLines.length(), 10, INCORRECT_NUMBER_OF_LINES);
+    test:assertEquals(logLines.length(), 9, INCORRECT_NUMBER_OF_LINES);
     validateLog(logLines[4], "ERROR", "[]", ERROR_LOG);
-    validateLog(logLines[5], "ERROR", "[]", ERROR_LOG_WITH_ERROR);
-    validateLog(logLines[6], "WARN", "[]", WARN_LOG);
-    validateLog(logLines[7], "INFO", "[]", INFO_LOG);
-    validateLog(logLines[8], "DEBUG", "[]", DEBUG_LOG);
-    validateLog(logLines[9], "TRACE", "[]", TRACE_LOG);
+    validateLog(logLines[5], "WARN", "[]", WARN_LOG);
+    validateLog(logLines[6], "INFO", "[]", INFO_LOG);
+    validateLog(logLines[7], "DEBUG", "[]", DEBUG_LOG);
+    validateLog(logLines[8], "TRACE", "[]", TRACE_LOG);
 }
 
 @test:Config {}
@@ -193,13 +185,12 @@ public function testErrorMessage() {
     io:ReadableCharacterChannel sc = new (readableResult, UTF_8);
     string outText = checkpanic sc.read(100000);
     string[] logLines = stringutils:split(outText, "\n");
-    test:assertEquals(logLines.length(), 10, INCORRECT_NUMBER_OF_LINES);
+    test:assertEquals(logLines.length(), 9, INCORRECT_NUMBER_OF_LINES);
     validateLog(logLines[4], "ERROR", "[]", ERROR_LOG);
     validateLog(logLines[5], "ERROR", "[]", INTEGER_OUTPUT);
     validateLog(logLines[6], "ERROR", "[]", FLOAT_OUTPUT);
     validateLog(logLines[7], "ERROR", "[]", BOOLEAN_OUTPUT);
     validateLog(logLines[8], "ERROR", "[]", FUNCTION_OUTPUT);
-    validateLog(logLines[9], "ERROR", "[]", ERROR_WITH_CAUSE_OUTPUT);
 }
 
 @test:Config {}

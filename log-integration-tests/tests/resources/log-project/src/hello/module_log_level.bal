@@ -18,6 +18,8 @@ import ballerina/log;
 import logorg/alpha;
 import logorg/beta;
 
+final log:Logger logger = log:logger();
+
 public function main() {
     log:setModuleLogLevel(log:WARN, moduleName = "logorg/alpha");
     log:setModuleLogLevel(log:DEBUG, moduleName = "logorg/beta");
@@ -29,9 +31,9 @@ public function main() {
 }
 
 public function logInMain() {
-    log:printError("Logging error log from inside `hello` module");
-    log:printWarn("Logging warn log from inside `hello` module");
-    log:printInfo("Logging info log from inside `hello` module");
-    log:printDebug("Logging debug log from inside `hello` module");
-    log:printTrace("Logging trace log from inside `hello` module");
+    logger.log(log:ERROR, "Logging error log from inside `hello` module");
+    logger.log(log:WARN, "Logging warn log from inside `hello` module");
+    logger.log(log:INFO, "Logging info log from inside `hello` module");
+    logger.log(log:DEBUG, "Logging debug log from inside `hello` module");
+    logger.log(log:TRACE, "Logging trace log from inside `hello` module");
 }

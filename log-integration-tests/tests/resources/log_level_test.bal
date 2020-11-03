@@ -17,11 +17,11 @@
 import ballerina/log;
 
 public function main() {
-    error e = error("B7aError", foo = "bar");
-    log:printError("ERROR level log");
-    log:printError("ERROR level log with error", err = e);
-    log:printWarn("WARN level log");
-    log:printInfo("INFO level log");
-    log:printDebug("DEBUG level log");
-    log:printTrace("TRACE level log");
+    log:Logger logger = log:logger();
+
+    logger.log(log:ERROR, "ERROR level log");
+    logger.log(log:WARN, "WARN level log");
+    logger.log(log:INFO, "INFO level log");
+    logger.log(log:DEBUG, "DEBUG level log");
+    logger.log(log:TRACE, "TRACE level log");
 }
