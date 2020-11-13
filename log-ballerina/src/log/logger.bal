@@ -38,7 +38,13 @@ public class Logger {
     # + level - Log level
     # + message - message
     public isolated function log(LogLevel level, anydata|(function () returns (anydata)) message) {
-        logExtern(level, message, self.logContext, self.logLevel);
+        if (isLogLevelEnabled(level)) {
+            if (message is isolated function () returns (anydata)) {
+                logExtern(level, message(), self.logContext, self.logLevel);
+            } else {
+                logExtern(level, message, self.logContext, self.logLevel);
+            }
+        }
     }
 }
 
@@ -90,5 +96,9 @@ public isolated function loggerWithContext(Logger logger, (map<anydata> & readon
 
 isolated function logExtern(LogLevel level, anydata|(function () returns (anydata)) message,
 (map<anydata> & readonly)? logContext, LogLevel? loggerLevel) = @java:Method {
+    'class: "org.ballerinalang.stdlib.log.Utils"
+} external;
+
+isolated function isLogLevelEnabled(LogLevel logLevel) returns boolean = @java:Method {
     'class: "org.ballerinalang.stdlib.log.Utils"
 } external;

@@ -18,17 +18,17 @@ import ballerina/io;
 import ballerina/log;
 
 public function main() {
-    error e = error("error occurred");
+    log:Logger logger = log:logger();
+
     final Fruit apple = new ("Apple");
 
-    log:printError("ERROR level log");
-    log:printError(123456);
-    log:printError(123456.789);
-    log:printError(true);
-    log:printError(isolated function() returns string {
+    logger.log(log:ERROR, "ERROR level log");
+    logger.log(log:ERROR, 123456);
+    logger.log(log:ERROR, 123456.789);
+    logger.log(log:ERROR, true);
+    logger.log(log:ERROR, isolated function() returns string {
         return io:sprintf("Name of the fruit is is %s", apple.getName());
         });
-    log:printError("error log with cause", e);
 }
 
 public readonly class Fruit {

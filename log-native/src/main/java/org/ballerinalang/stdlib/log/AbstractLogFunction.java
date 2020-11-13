@@ -51,12 +51,12 @@ public abstract class AbstractLogFunction {
      * Execute logging provided message.
      *
      * @param message  log message
+     * @param keyValues  key value pairs
      * @param logLevel log level
      * @param pckg package
      * @param consumer log message consumer
      */
-    static void logMessage(Object message, BLogLevel logLevel, String pckg,
-    static void logMessage(Strand strand, Object message, String keyValues, BLogLevel logLevel, String pckg,
+    static void logMessage(Object message, String keyValues, BLogLevel logLevel, String pckg,
                            BiConsumer<String, String> consumer) {
         // Create a new log message supplier
         Supplier<String> logMessage = new Supplier<String>() {
@@ -77,7 +77,7 @@ public abstract class AbstractLogFunction {
     }
 
     static String getPackagePath() {
-        String className = Thread.currentThread().getStackTrace()[5].getClassName();
+        String className = Thread.currentThread().getStackTrace()[6].getClassName();
         String[] pkgData = className.split("\\.");
         if (pkgData.length > 1) {
             return pkgData[0] + "/" + pkgData[1];

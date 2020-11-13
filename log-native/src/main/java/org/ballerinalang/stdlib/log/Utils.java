@@ -19,7 +19,6 @@
 package org.ballerinalang.stdlib.log;
 
 import io.ballerina.runtime.api.values.BMap;
-import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 import org.ballerinalang.logging.util.BLogLevel;
 
@@ -59,27 +58,27 @@ public class Utils extends AbstractLogFunction {
                 }
             }
             if (level == BLogLevel.ERROR) {
-                logMessage(Scheduler.getStrand(), msg, keyValues.toString(), level, getPackagePath(),
+                logMessage(msg, keyValues.toString(), level, getPackagePath(),
                         (pkg, message) -> {
                             getLogger(pkg).error(message);
                         });
             } else if (level == BLogLevel.WARN) {
-                logMessage(Scheduler.getStrand(), msg, keyValues.toString(), level, getPackagePath(),
+                logMessage(msg, keyValues.toString(), level, getPackagePath(),
                         (pkg, message) -> {
                             getLogger(pkg).warn(message);
                         });
             } else if (level == BLogLevel.INFO) {
-                logMessage(Scheduler.getStrand(), msg, keyValues.toString(), level, getPackagePath(),
+                logMessage(msg, keyValues.toString(), level, getPackagePath(),
                         (pkg, message) -> {
                             getLogger(pkg).info(message);
                         });
             } else if (level == BLogLevel.DEBUG) {
-                logMessage(Scheduler.getStrand(), msg, keyValues.toString(), level, getPackagePath(),
+                logMessage(msg, keyValues.toString(), level, getPackagePath(),
                         (pkg, message) -> {
                             getLogger(pkg).debug(message);
                         });
             } else {
-                logMessage(Scheduler.getStrand(), msg, keyValues.toString(), level, getPackagePath(),
+                logMessage(msg, keyValues.toString(), level, getPackagePath(),
                         (pkg, message) -> {
                             getLogger(pkg).trace(message);
                         });
@@ -93,45 +92,6 @@ public class Utils extends AbstractLogFunction {
         } else {
             return LOG_MANAGER.getPackageLogLevel(".").value() <= BLogLevel.toBLogLevel(logLevel.getValue()).value();
         }
-    }
-
-    public static void logMessage(BString logLevel, Object msg) {
-        switch (BLogLevel.toBLogLevel(logLevel.getValue())) {
-            case WARN:
-                logMessage(msg, BLogLevel.toBLogLevel(logLevel.getValue()), getPackagePath(),
-                        (pkg, message) -> {
-                            getLogger(pkg).warn(message);
-                        });
-                break;
-            case INFO:
-                logMessage(msg, BLogLevel.toBLogLevel(logLevel.getValue()), getPackagePath(),
-                        (pkg, message) -> {
-                            getLogger(pkg).info(message);
-                        });
-                break;
-            case DEBUG:
-                logMessage(msg, BLogLevel.toBLogLevel(logLevel.getValue()), getPackagePath(),
-                        (pkg, message) -> {
-                            getLogger(pkg).debug(message);
-                        });
-                break;
-            case TRACE:
-                logMessage(msg, BLogLevel.toBLogLevel(logLevel.getValue()), getPackagePath(),
-                        (pkg, message) -> {
-                            getLogger(pkg).trace(message);
-                        });
-                break;
-            default:
-                break;
-        }
-    }
-
-    public static void logMessageWithError(BString logLevel, Object msg, Object err) {
-        logMessage(msg, BLogLevel.ERROR, getPackagePath(),
-                (pkg, message) -> {
-                    String errorMsg = (err == null) ? "" : " : " + err.toString();
-                    getLogger(pkg).error(message + errorMsg);
-                });
     }
 
     public static void setModuleLogLevel(BString logLevel, Object moduleName) {

@@ -18,13 +18,15 @@ import ballerina/io;
 import ballerina/log;
 
 public function main() {
+    log:Logger logger = log:logger();
+
     final Fruit apple = new ("Apple");
 
-    log:printDebug("DEBUG level log");
-    log:printDebug(123456);
-    log:printDebug(123456.789);
-    log:printDebug(true);
-    log:printDebug(isolated function() returns string {
+    logger.log(log:DEBUG, "DEBUG level log");
+    logger.log(log:DEBUG, 123456);
+    logger.log(log:DEBUG, 123456.789);
+    logger.log(log:DEBUG, true);
+    logger.log(log:DEBUG, isolated function() returns string {
         return io:sprintf("Name of the fruit is is %s", apple.getName());
         });
 }
