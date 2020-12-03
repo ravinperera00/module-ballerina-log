@@ -49,7 +49,7 @@ public function testLogsOff() {
     io:ReadableCharacterChannel sc = new (readableResult, UTF_8);
     string outText = checkpanic sc.read(100000);
     string[] logLines = stringutils:split(outText, "\n");
-    test:assertEquals(logLines.length(), 3, INCORRECT_NUMBER_OF_LINES);
+    test:assertEquals(logLines.length(), 5, INCORRECT_NUMBER_OF_LINES);
 }
 
 @test:Config {}
@@ -63,8 +63,8 @@ public function testErrorLevel() {
     io:ReadableCharacterChannel sc = new (readableResult, UTF_8);
     string outText = checkpanic sc.read(100000);
     string[] logLines = stringutils:split(outText, "\n");
-    test:assertEquals(logLines.length(), 5, INCORRECT_NUMBER_OF_LINES);
-    validateLog(logLines[4], "ERROR", "[]", ERROR_LOG);
+    test:assertEquals(logLines.length(), 7, INCORRECT_NUMBER_OF_LINES);
+    validateLog(logLines[6], "ERROR", "[]", ERROR_LOG);
 }
 
 @test:Config {}
@@ -78,9 +78,9 @@ public function testWarnLevel() {
     io:ReadableCharacterChannel sc = new (readableResult, UTF_8);
     string outText = checkpanic sc.read(100000);
     string[] logLines = stringutils:split(outText, "\n");
-    test:assertEquals(logLines.length(), 6, INCORRECT_NUMBER_OF_LINES);
-    validateLog(logLines[4], "ERROR", "[]", ERROR_LOG);
-    validateLog(logLines[5], "WARN", "[]", WARN_LOG);
+    test:assertEquals(logLines.length(), 8, INCORRECT_NUMBER_OF_LINES);
+    validateLog(logLines[6], "ERROR", "[]", ERROR_LOG);
+    validateLog(logLines[7], "WARN", "[]", WARN_LOG);
 }
 
 @test:Config {}
@@ -94,10 +94,10 @@ public function testInfoLevel() {
     io:ReadableCharacterChannel sc = new (readableResult, UTF_8);
     string outText = checkpanic sc.read(100000);
     string[] logLines = stringutils:split(outText, "\n");
-    test:assertEquals(logLines.length(), 7, INCORRECT_NUMBER_OF_LINES);
-    validateLog(logLines[4], "ERROR", "[]", ERROR_LOG);
-    validateLog(logLines[5], "WARN", "[]", WARN_LOG);
-    validateLog(logLines[6], "INFO", "[]", INFO_LOG);
+    test:assertEquals(logLines.length(), 9, INCORRECT_NUMBER_OF_LINES);
+    validateLog(logLines[6], "ERROR", "[]", ERROR_LOG);
+    validateLog(logLines[7], "WARN", "[]", WARN_LOG);
+    validateLog(logLines[8], "INFO", "[]", INFO_LOG);
 }
 
 @test:Config {}
@@ -111,11 +111,11 @@ public function testDebugLevel() {
     io:ReadableCharacterChannel sc = new (readableResult, UTF_8);
     string outText = checkpanic sc.read(100000);
     string[] logLines = stringutils:split(outText, "\n");
-    test:assertEquals(logLines.length(), 8, INCORRECT_NUMBER_OF_LINES);
-    validateLog(logLines[4], "ERROR", "[]", ERROR_LOG);
-    validateLog(logLines[5], "WARN", "[]", WARN_LOG);
-    validateLog(logLines[6], "INFO", "[]", INFO_LOG);
-    validateLog(logLines[7], "DEBUG", "[]", DEBUG_LOG);
+    test:assertEquals(logLines.length(), 10, INCORRECT_NUMBER_OF_LINES);
+    validateLog(logLines[6], "ERROR", "[]", ERROR_LOG);
+    validateLog(logLines[7], "WARN", "[]", WARN_LOG);
+    validateLog(logLines[8], "INFO", "[]", INFO_LOG);
+    validateLog(logLines[9], "DEBUG", "[]", DEBUG_LOG);
 }
 
 @test:Config {}
@@ -129,12 +129,12 @@ public function testTraceLevel() {
     io:ReadableCharacterChannel sc = new (readableResult, UTF_8);
     string outText = checkpanic sc.read(100000);
     string[] logLines = stringutils:split(outText, "\n");
-    test:assertEquals(logLines.length(), 9, INCORRECT_NUMBER_OF_LINES);
-    validateLog(logLines[4], "ERROR", "[]", ERROR_LOG);
-    validateLog(logLines[5], "WARN", "[]", WARN_LOG);
-    validateLog(logLines[6], "INFO", "[]", INFO_LOG);
-    validateLog(logLines[7], "DEBUG", "[]", DEBUG_LOG);
-    validateLog(logLines[8], "TRACE", "[]", TRACE_LOG);
+    test:assertEquals(logLines.length(), 11, INCORRECT_NUMBER_OF_LINES);
+    validateLog(logLines[6], "ERROR", "[]", ERROR_LOG);
+    validateLog(logLines[7], "WARN", "[]", WARN_LOG);
+    validateLog(logLines[8], "INFO", "[]", INFO_LOG);
+    validateLog(logLines[9], "DEBUG", "[]", DEBUG_LOG);
+    validateLog(logLines[10], "TRACE", "[]", TRACE_LOG);
 }
 
 @test:Config {}
@@ -148,12 +148,12 @@ public function testAllOn() {
     io:ReadableCharacterChannel sc = new (readableResult, UTF_8);
     string outText = checkpanic sc.read(100000);
     string[] logLines = stringutils:split(outText, "\n");
-    test:assertEquals(logLines.length(), 9, INCORRECT_NUMBER_OF_LINES);
-    validateLog(logLines[4], "ERROR", "[]", ERROR_LOG);
-    validateLog(logLines[5], "WARN", "[]", WARN_LOG);
-    validateLog(logLines[6], "INFO", "[]", INFO_LOG);
-    validateLog(logLines[7], "DEBUG", "[]", DEBUG_LOG);
-    validateLog(logLines[8], "TRACE", "[]", TRACE_LOG);
+    test:assertEquals(logLines.length(), 11, INCORRECT_NUMBER_OF_LINES);
+    validateLog(logLines[6], "ERROR", "[]", ERROR_LOG);
+    validateLog(logLines[7], "WARN", "[]", WARN_LOG);
+    validateLog(logLines[8], "INFO", "[]", INFO_LOG);
+    validateLog(logLines[9], "DEBUG", "[]", DEBUG_LOG);
+    validateLog(logLines[10], "TRACE", "[]", TRACE_LOG);
 }
 
 @test:Config {}
