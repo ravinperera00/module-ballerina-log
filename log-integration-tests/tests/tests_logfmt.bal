@@ -296,13 +296,13 @@ public function testObservabilityLogfmt() {
     int exitCode = checkpanic result.exitCode();
     io:ReadableByteChannel readableResult = result.stderr();
     io:ReadableCharacterChannel sc = new (readableResult, UTF_8);
-    string outText = checkpanic sc.read(100000);
+    string outText = checkpanic sc.readString();
     string[] logLines = regex:split(outText, "\n");
     test:assertEquals(logLines.length(), 9, INCORRECT_NUMBER_OF_LINES);
 
     io:ReadableByteChannel readableOutResult = result.stdout();
     io:ReadableCharacterChannel sc2 = new (readableOutResult, UTF_8);
-    string outText2 = checkpanic sc2.read(100000);
+    string outText2 = checkpanic sc2.readString();
     string[] ioLines = regex:split(outText2, "\n");
     string spanContext = ioLines[1];
     io:println("ioLines");
